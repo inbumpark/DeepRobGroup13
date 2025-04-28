@@ -149,4 +149,4 @@ python test.py --coco_path DAWN-Dataset.v2i.coco --visualize
 DETR is released under the Apache 2.0 license. Please see the [LICENSE](LICENSE) file for more information.
 
 # Acknowledgement
-We note that this repository is built on [https://github.com/facebookresearch/detr][https://github.com/facebookresearch/detr] for the use of a academic class project at the University of Michigan's Winter 2025 DeepRob course.
+We note that this repository is built on https://github.com/facebookresearch/detr for the use of a academic class project at the University of Michigan's Winter 2025 DeepRob course.
