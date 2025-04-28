@@ -106,6 +106,7 @@ def get_args_parser():
     parser.add_argument('--world_size', default=1, type=int,
                         help='number of distributed processes')
     parser.add_argument('--dist_url', default='env://', help='url used to set up distributed training')
+    parser.add_argument('--visualize', action='store_true')
     return parser
 
 
@@ -220,22 +221,23 @@ if __name__ == '__main__':
     category_id_to_name = {cat["id"]: cat["name"] for cat in coco_gt.dataset["categories"]}
 
     # METRICS
-    # for weather, result in results.items():
-        # print(f"\nWeather Samples: {weather}, {len(weather_to_image_paths[weather])}")
-    #     result_file = f'detr_results_{weather}.json'
-    #     with open(result_file, 'w') as f:
-    #         json.dump(result, f, indent=2)
+    for weather, result in results.items():
+        print(f"\nWeather Samples: {weather}, {len(weather_to_image_paths[weather])}")
+        result_file = f'detr_results_{weather}.json'
+        with open(result_file, 'w') as f:
+            json.dump(result, f, indent=2)
 
-    #     coco_dt = coco_gt.loadRes(result_file)
-    #     coco_eval = COCOeval(coco_gt, coco_dt, iouType='bbox')
-    #     coco_eval.evaluate()
-    #     coco_eval.accumulate()
-    #     coco_eval.summarize()
+        coco_dt = coco_gt.loadRes(result_file)
+        coco_eval = COCOeval(coco_gt, coco_dt, iouType='bbox')
+        coco_eval.evaluate()
+        coco_eval.accumulate()
+        coco_eval.summarize()
 
     # VISUALIZATION
-    for weather, result in vis_fines.items(): 
-        print(f"\nWeather Samples: {weather}, {len(result)}")
-        for ri, res in enumerate(result):
-            sample_image_id = res["image_id"]
-            sample_img_path = os.path.join(IMAGES_DIR, id_to_filename[sample_image_id])
-            visualize_prediction_and_gt(sample_img_path, sample_image_id, res, vis_bases[weather][ri], weather, ri)
+    if args.visualize:
+        for weather, result in vis_fines.items(): 
+            print(f"\nWeather Samples: {weather}, {len(result)}")
+            for ri, res in enumerate(result):
+                sample_image_id = res["image_id"]
+                sample_img_path = os.path.join(IMAGES_DIR, id_to_filename[sample_image_id])
+                visualize_prediction_and_gt(sample_img_path, sample_image_id, res, vis_bases[weather][ri], weather, ri)
